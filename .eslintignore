@@ -1,6 +1,7 @@
 build/
 /public/*.js
-/*.js
-/*.mjs
+/documents/*.js
 /.*/
 content/
+dist/
+browser/
