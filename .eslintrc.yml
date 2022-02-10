@@ -1,0 +1,24 @@
+root: true
+extends:
+  - '@willin'
+  - '@remix-run'
+  - plugin:react/recommended
+  - plugin:react-hooks/recommended
+  - plugin:jsx-a11y/recommended
+  - plugin:@typescript-eslint/recommended-requiring-type-checking
+plugins:
+  - import
+parserOptions:
+  project: ./tsconfig.json
+  tsconfigRootDir: ./
+settings:
+  import/resolver:
+    typescript: {}
+rules:
+  camelcase: 0
+  no-shadow: 0
+  import/named: 0
+  react/react-in-jsx-scope: 0
+  react/jsx-no-target-blank: 0
+  quotes: [2, 'single', { 'avoidEscape': true }]
+  '@typescript-eslint/explicit-function-return-type': 0
