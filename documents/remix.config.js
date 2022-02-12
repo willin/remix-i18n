@@ -11,3 +11,14 @@ module.exports = {
   devServerBroadcastDelay: 1000,
   ignoredRouteFiles: ['.*']
 };
+
+// can be an sync / async function or an object
+exports.mdx = async (filename) => {
+  const [rehypeHighlight, remarkToc] = await Promise.all([
+    import('rehype-highlight').then((mod) => mod.default)
+  ]);
+
+  return {
+    rehypePlugins: [rehypeHighlight]
+  };
+};

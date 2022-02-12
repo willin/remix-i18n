@@ -49,9 +49,6 @@ export class RemixI18n {
   };
 
   public t = (key: string, params?: any, lang?: string): string => {
-    console.log('t', key, lang);
-    console.log(this.currentLocale, this.dict);
-
     // eslint-disable-next-line
     const val = dlv(this.dict[lang || this.currentLocale] as any, key, key);
     // eslint-disable-next-line

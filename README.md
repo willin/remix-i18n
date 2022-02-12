@@ -1,14 +1,9 @@
-# Remix Cloudflare Pages Template
+# remix-i18n
 
-Including:
+The fastest solution to translate your Remix apps
 
-- ESLint
-  - React
-  - Remix
-  - A11y
-  - Lint-Staged
-- Prettier
-- Editorconfig
-- Tailwind CSS
-- PM2 Dev
-- Package Update Init Script
+Document / 文档： <https://remix-i18n.js.cool/>
+
+## LICENSE
+
+Apache-2.0
