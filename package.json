@@ -1,6 +1,6 @@
 {
   "name": "remix-i18n",
-  "version": "0.0.3",
+  "version": "0.0.15",
   "description": "",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
