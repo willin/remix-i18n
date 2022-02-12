@@ -1,1 +1,3 @@
-export { default, loader } from './$';
+import { LoaderFunction, redirect } from 'remix';
+
+export const loader: LoaderFunction = () => redirect('/zh/blog');

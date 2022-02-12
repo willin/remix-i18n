@@ -2,7 +2,7 @@ import { renderToString } from 'react-dom/server';
 import { RemixServer } from 'remix';
 import type { EntryContext } from 'remix';
 import { I18nProvider } from 'remix-i18n';
-import { getLocale } from '~/get-locale';
+import { i18n, getLocale } from '~/i18n';
 
 export default function handleRequest(
   request: Request,
@@ -10,9 +10,11 @@ export default function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
-  let locale = getLocale(new URL(request.url).pathname);
+  const locale = getLocale(new URL(request.url).pathname);
+  i18n.locale(locale);
+
   const markup = renderToString(
-    <I18nProvider fallback='zh' locale={locale}>
+    <I18nProvider i18n={i18n}>
       <RemixServer context={remixContext} url={request.url} />
     </I18nProvider>
   );
