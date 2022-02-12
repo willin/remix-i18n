@@ -4,8 +4,9 @@ node_modules
 .DS_Store
 
 demo/
-/.cache
-/.mf
-/build
-/public/build
-/app/styles
+.cache/
+.mf/
+build/
+**/app/styles/
+/dist
+/browser

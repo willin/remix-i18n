@@ -1,16 +1,16 @@
 root: true
 extends:
+  - '@willin'
   - '@remix-run'
   - plugin:react/recommended
   - plugin:react-hooks/recommended
   - plugin:jsx-a11y/recommended
-  - '@willin'
   - plugin:@typescript-eslint/recommended-requiring-type-checking
 plugins:
   - import
 parserOptions:
   project: ./tsconfig.json
-  tsconfigRootDir: ./
+  tsconfigRootDir: ./documents
 settings:
   import/resolver:
     typescript: {}
