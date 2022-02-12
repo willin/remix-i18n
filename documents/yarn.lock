@@ -3569,10 +3569,10 @@ remark-rehype@^9.0.0:
     mdast-util-to-hast "^11.0.0"
     unified "^10.0.0"
 
-remix-i18n@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/remix-i18n/-/remix-i18n-0.0.2.tgz#25d7ff9f1947a4917abcdb2e31797946c5cec966"
-  integrity sha512-QqHkK5/TX10a2teGgbl2JwfXf4c8wRHEjtLxfYpsRZCPFFtnPUKmGzdJKl/udHsnCxk/O7++f8ONgLdJnfURtA==
+remix-i18n@^0.0.15:
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/remix-i18n/-/remix-i18n-0.0.15.tgz#e33389f335473da75b9a51093029635518144210"
+  integrity sha512-MWKPuuIb0LCrBDorcRy75KoocUnEF/HTj9Ck04zxKbc1eWxE8YmLX4XE1uRdlmvzO89VTtF/rvJxnmgaaXwTDw==
   dependencies:
     frenchkiss "^0.2.3"
 
