@@ -1,6 +1,8 @@
 /**
  * @type {import('@remix-run/dev/config').AppConfig}
  */
+const theme = require('./highlight');
+
 module.exports = {
   appDirectory: 'app',
   assetsBuildDirectory: 'public/build',
@@ -9,16 +11,14 @@ module.exports = {
   serverPlatform: 'neutral',
   serverBuildDirectory: 'build',
   devServerBroadcastDelay: 1000,
-  ignoredRouteFiles: ['.*']
-};
+  ignoredRouteFiles: ['.*'],
+  mdx: async (filename) => {
+    const [remarkCodeHike] = await Promise.all([
+      import('@code-hike/mdx').then((mod) => mod.remarkCodeHike)
+    ]);
 
-// can be an sync / async function or an object
-exports.mdx = async (filename) => {
-  const [rehypeHighlight, remarkToc] = await Promise.all([
-    import('rehype-highlight').then((mod) => mod.default)
-  ]);
-
-  return {
-    rehypePlugins: [rehypeHighlight]
-  };
+    return {
+      remarkPlugins: [[remarkCodeHike, { theme, lineNumbers: true }]]
+    };
+  }
 };
