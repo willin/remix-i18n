@@ -7,10 +7,10 @@ export const i18n = new RemixI18n({
 
 export function getLocale(pathname: string): string {
   const [, locale = ''] = pathname.split('/');
-  if (i18n.options.supportedLanguages.includes(locale)) {
+  if (i18n.supportedLanguages.includes(locale)) {
     return locale;
   }
-  return i18n.options.fallbackLng;
+  return i18n.fallbackLng;
 }
 
 const locales = {

@@ -1,5 +1,10 @@
-import frenchkiss from 'frenchkiss';
-import type { missingVariableHandler, missingKeyHandler } from 'frenchkiss';
+import dlv from 'dlv';
+import tmpl from 'templite';
+
+type Fn = (...args: any[]) => string;
+export interface I18nDict {
+  [key: string]: string | number | Fn | I18nDict;
+}
 
 export interface RemixI18nOptions {
   /**
@@ -14,61 +19,51 @@ export interface RemixI18nOptions {
    * This should be be same as the fallbackLng in the i18next options.
    */
   fallbackLng: string;
-
-  /**
-   * When the client requests a missing key, frenchKiss will returns the key as
-   * result. It's possible to handle it and return what you want or just send an
-   * event to your error reporting system.
-   */
-  onMissingKey?: missingKeyHandler;
-
-  /**
-   * It's possible to handle missing variables, sending errors to your monitoring
-   * server or handle it directly by returning something to replace with.
-   */
-  onMissingVariable?: missingVariableHandler;
 }
 
 export class RemixI18n {
-  private onMissingKey = frenchkiss.onMissingKey;
+  private currentLocale: string;
 
-  private onMissingVariable = frenchkiss.onMissingVariable;
+  public fallbackLng: string;
 
-  private fallback = frenchkiss.fallback;
+  public supportedLanguages: string[];
 
-  private onChangeLanguage?: (locale: string) => void;
+  private dict: I18nDict = {};
 
-  constructor(public options: RemixI18nOptions) {
-    this.locale(options.fallbackLng);
-    this.fallback(options.fallbackLng);
-    if (options.onMissingKey) {
-      this.onMissingKey(options.onMissingKey);
-    }
-    if (options.onMissingVariable) {
-      this.onMissingVariable(options.onMissingVariable);
-    }
+  constructor(options: RemixI18nOptions) {
+    this.currentLocale = options.fallbackLng;
+    this.supportedLanguages = options.supportedLanguages;
+    this.fallbackLng = options.fallbackLng;
   }
 
-  public locale(lang?: string) {
-    let current = frenchkiss.locale();
-    if (lang !== undefined && current !== lang) {
-      current = frenchkiss.locale(lang);
+  public locale = (lang?: string) => {
+    if (lang !== undefined && this.currentLocale !== lang) {
+      this.currentLocale = lang;
       this.onChangeLanguage?.(lang);
     }
-    return current;
-  }
+    return this.currentLocale;
+  };
 
-  public t = frenchkiss.t;
+  public set = (lang: string, dict: I18nDict) => {
+    this.dict[lang] = Object.assign(this.dict[lang] || {}, dict);
+  };
 
-  public set = frenchkiss.set;
+  public t = (key: string, params?: any, lang?: string): string => {
+    console.log('t', key, lang);
+    console.log(this.currentLocale, this.dict);
 
-  public extend = frenchkiss.extend;
+    // eslint-disable-next-line
+    const val = dlv(this.dict[lang || this.currentLocale] as any, key, key);
+    // eslint-disable-next-line
+    if (typeof val === 'function') return val(params) as string;
+    if (typeof val === 'string') return tmpl(val, params);
+    return val as string;
+  };
 
-  public unset = frenchkiss.unset;
+  /* PROTECTED */
+  private onChangeLanguage?: (locale: string) => void;
 
-  public plural = frenchkiss.plural;
-
-  public setOnChange(fn: (locale: string) => void) {
+  public setOnChange = (fn: (locale: string) => void) => {
     this.onChangeLanguage = fn;
-  }
+  };
 }
