@@ -1,0 +1,140 @@
+---
+title: 'remix-i18n'
+---
+
+# {attributes.title}
+
+## Install
+
+```bash
+npm install --save remix-i18n
+```
+
+### Config
+
+```ts
+export interface RemixI18nOptions {
+  /**
+   * Define the list of supported languages, this is used to determine if one of
+   * the languages requested by the user is supported by the application.
+   * This should be be same as the supportedLngs in the i18next options.
+   */
+  supportedLanguages: string[];
+  /**
+   * Define the fallback language that it's going to be used in the case user
+   * expected language is not supported.
+   * This should be be same as the fallbackLng in the i18next options.
+   */
+  fallbackLng: string;
+}
+
+export declare class RemixI18n {
+  private currentLocale;
+  fallbackLng: string;
+  supportedLanguages: string[];
+  private dict;
+  constructor(options: RemixI18nOptions);
+  locale: (lang?: string | undefined) => string;
+  set: (lang: string, dict: I18nDict) => void;
+  t: (key: string, params?: any, lang?: string | undefined) => string;
+  private onChangeLanguage?;
+  setOnChange: (fn: (locale: string) => void) => void;
+}
+```
+
+```ts
+import { RemixI18n } from 'remix-i18n';
+
+const i18n = new RemixI18n({
+  supportedLanguages: ['en', 'tl', 'da', 'zh'],
+  fallbackLng: 'zh'
+});
+```
+
+### Set locale messages
+
+```ts
+i18n.set('locale', {
+  hello: 'Hello World'
+});
+```
+
+### Client Side
+
+```ts
+// entry.client.tsx
+import { hydrate } from 'react-dom';
+import { RemixBrowser } from 'remix';
+import { I18nProvider } from 'remix-i18n';
+import { i18n, getLocale } from '~/i18n';
+
+const locale = getLocale(window.location.pathname);
+i18n.locale(locale);
+
+hydrate(
+  <I18nProvider i18n={i18n}>
+    <RemixBrowser />
+  </I18nProvider>,
+  document
+);
+```
+
+### Server Side
+
+```ts
+// entry.server.tsx
+import { renderToString } from 'react-dom/server';
+import { RemixServer } from 'remix';
+import type { EntryContext } from 'remix';
+import { I18nProvider } from 'remix-i18n';
+import { i18n, getLocale } from '~/i18n';
+
+export default function handleRequest(
+  request: Request,
+  responseStatusCode: number,
+  responseHeaders: Headers,
+  remixContext: EntryContext
+) {
+  const locale = getLocale(new URL(request.url).pathname);
+  i18n.locale(locale);
+
+  const markup = renderToString(
+    <I18nProvider i18n={i18n}>
+      <RemixServer context={remixContext} url={request.url} />
+    </I18nProvider>
+  );
+
+  responseHeaders.set('Content-Type', 'text/html');
+
+  return new Response(`<!DOCTYPE html>${markup}`, {
+    status: responseStatusCode,
+    headers: responseHeaders
+  });
+}
+```
+
+## Change locale
+
+```ts
+const i18n = useI18n();
+const location = useLocation();
+useEffect(() => {
+  const locale = getLocale(location.pathname);
+  if (locale !== i18n.locale()) {
+    i18n.locale(locale);
+  }
+}, [location]);
+```
+
+## Useage
+
+```ts
+const { t } = useI18n();
+
+// jsx
+<h1>{t('hello')}</h1>;
+```
+
+## Plurals
+
+Ref: https://github.com/lukeed/rosetta/issues/4

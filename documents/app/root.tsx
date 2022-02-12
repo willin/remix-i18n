@@ -13,6 +13,7 @@ import type { MetaFunction } from 'remix';
 // eslint-disable-next-line import/no-unresolved
 import tailwindStyles from '~/styles/global.css';
 import { getLocale } from './i18n';
+import { Layout } from './components/layout';
 
 export const meta: MetaFunction = () => ({ title: 'New Remix App' });
 
@@ -31,7 +32,7 @@ export default function App() {
   }, [location]);
 
   return (
-    <html lang={i18n.locale()}>
+    <html lang={i18n.locale()} className='dark'>
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width,initial-scale=1' />
@@ -39,7 +40,9 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Outlet />
+        <Layout>
+          <Outlet />
+        </Layout>
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === 'development' && <LiveReload />}

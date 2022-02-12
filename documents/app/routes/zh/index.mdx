@@ -1,0 +1,117 @@
+---
+title: 'remix-i18n'
+---
+
+# {attributes.title}
+
+## 安装
+
+```bash
+npm install --save remix-i18n
+```
+
+### 配置
+
+```ts
+export interface RemixI18nOptions {
+  // 支持的语言
+  supportedLanguages: string[];
+  // 失败备选
+  fallbackLng: string;
+}
+```
+
+```ts
+const i18n = new RemixI18n({
+  supportedLanguages: ['en', 'tl', 'da', 'zh'],
+  fallbackLng: 'zh'
+});
+```
+
+### 添加语言翻译
+
+```ts
+i18n.set('locale', {
+  hello: '你好'
+});
+```
+
+### 客户端设置
+
+```ts
+// entry.client.tsx
+import { hydrate } from 'react-dom';
+import { RemixBrowser } from 'remix';
+import { I18nProvider } from 'remix-i18n';
+import { i18n, getLocale } from '~/i18n';
+
+const locale = getLocale(window.location.pathname);
+i18n.locale(locale);
+
+hydrate(
+  <I18nProvider i18n={i18n}>
+    <RemixBrowser />
+  </I18nProvider>,
+  document
+);
+```
+
+### 服务器端设置
+
+```ts
+// entry.server.tsx
+import { renderToString } from 'react-dom/server';
+import { RemixServer } from 'remix';
+import type { EntryContext } from 'remix';
+import { I18nProvider } from 'remix-i18n';
+import { i18n, getLocale } from '~/i18n';
+
+export default function handleRequest(
+  request: Request,
+  responseStatusCode: number,
+  responseHeaders: Headers,
+  remixContext: EntryContext
+) {
+  const locale = getLocale(new URL(request.url).pathname);
+  i18n.locale(locale);
+
+  const markup = renderToString(
+    <I18nProvider i18n={i18n}>
+      <RemixServer context={remixContext} url={request.url} />
+    </I18nProvider>
+  );
+
+  responseHeaders.set('Content-Type', 'text/html');
+
+  return new Response(`<!DOCTYPE html>${markup}`, {
+    status: responseStatusCode,
+    headers: responseHeaders
+  });
+}
+```
+
+## 语言切换
+
+```ts
+const i18n = useI18n();
+const location = useLocation();
+useEffect(() => {
+  const locale = getLocale(location.pathname);
+  if (locale !== i18n.locale()) {
+    i18n.locale(locale);
+  }
+}, [location]);
+```
+
+## 使用模板
+
+```ts
+const { t } = useI18n();
+
+// jsx
+<h1>{t('hello')}</h1>;
+```
+
+## 复数
+
+Ref: https://github.com/lukeed/rosetta/issues/4

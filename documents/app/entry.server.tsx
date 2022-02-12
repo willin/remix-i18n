@@ -2,7 +2,7 @@ import { renderToString } from 'react-dom/server';
 import { RemixServer } from 'remix';
 import type { EntryContext } from 'remix';
 import { I18nProvider } from 'remix-i18n';
-import { i18n, getLocale } from '~/i18n';
+import { i18n, getLocale } from './i18n';
 
 export default function handleRequest(
   request: Request,

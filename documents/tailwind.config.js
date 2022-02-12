@@ -3,7 +3,7 @@ const path = require('path');
 const fromRoot = (p) => path.join(__dirname, p);
 
 module.exports = {
-  darkMode: false,
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -11,6 +11,6 @@ module.exports = {
       }
     }
   },
-  // plugins: [require('@tailwindcss/typography'), require('daisyui')],
+  plugins: [require('@tailwindcss/typography'), require('flowbite/plugin')],
   content: [fromRoot('./+(app|content)/**/*.+(js|ts|tsx|mdx|md)')]
 };
