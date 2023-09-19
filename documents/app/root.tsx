@@ -9,7 +9,7 @@ import {
   ScrollRestoration,
   useLocation
 } from '@remix-run/react';
-import type { MetaFunction } from '@remix-run/cloudflare';
+import type { LinksFunction, MetaFunction } from '@remix-run/cloudflare';
 // eslint-disable-next-line import/no-unresolved
 import tailwindStyles from '~/global.css';
 import { getLocale } from './i18n';
