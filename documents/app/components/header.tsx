@@ -1,4 +1,4 @@
-import { Link } from 'remix';
+import { Link } from '@remix-run/react';
 import { Logo } from './logo';
 
 export function Header() {

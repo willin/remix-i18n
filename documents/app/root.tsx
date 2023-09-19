@@ -8,14 +8,14 @@ import {
   Scripts,
   ScrollRestoration,
   useLocation
-} from 'remix';
-import type { MetaFunction } from 'remix';
+} from '@remix-run/react';
+import type { MetaFunction } from '@remix-run/cloudflare';
 // eslint-disable-next-line import/no-unresolved
 import tailwindStyles from '~/styles/global.css';
 import { getLocale } from './i18n';
 import { Layout } from './components/layout';
 
-export const meta: MetaFunction = () => ({ title: 'New Remix App' });
+export const meta: MetaFunction = () => [{ title: 'New Remix App' }];
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: tailwindStyles }

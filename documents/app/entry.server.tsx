@@ -1,28 +1,40 @@
-import { renderToString } from 'react-dom/server';
-import { RemixServer } from 'remix';
-import type { EntryContext } from 'remix';
+import isbot from 'isbot';
+import { renderToReadableStream } from 'react-dom/server';
+import { RemixServer } from '@remix-run/react';
 import { I18nProvider } from 'remix-i18n';
 import { i18n, getLocale } from './i18n';
 
-export default function handleRequest(
+export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext
+  remixContext: EntryContext,
+  loadContext: AppLoadContext
 ) {
   const locale = getLocale(new URL(request.url).pathname);
   i18n.locale(locale);
 
-  const markup = renderToString(
+  const body = await renderToReadableStream(
     <I18nProvider i18n={i18n}>
       <RemixServer context={remixContext} url={request.url} />
-    </I18nProvider>
+    </I18nProvider>,
+    {
+      signal: request.signal,
+      onError(error: unknown) {
+        // Log streaming rendering errors from inside the shell
+        console.error(error);
+        responseStatusCode = 500;
+      }
+    }
   );
 
-  responseHeaders.set('Content-Type', 'text/html');
+  if (isbot(request.headers.get('user-agent'))) {
+    await body.allReady;
+  }
 
-  return new Response(`<!DOCTYPE html>${markup}`, {
-    status: responseStatusCode,
-    headers: responseHeaders
+  responseHeaders.set('Content-Type', 'text/html');
+  return new Response(body, {
+    headers: responseHeaders,
+    status: responseStatusCode
   });
 }

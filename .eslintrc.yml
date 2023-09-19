@@ -1,11 +1,12 @@
 root: true
 extends:
-  - '@remix-run'
-  - plugin:react/recommended
-  - plugin:react-hooks/recommended
-  - plugin:jsx-a11y/recommended
-  - '@willin'
-  - plugin:@typescript-eslint/recommended-requiring-type-checking
+  - '@remix-run/eslint-config'
+  - '@remix-run/eslint-config/node'
+  # - plugin:react/recommended
+  # - plugin:react-hooks/recommended
+  # - plugin:jsx-a11y/recommended
+  # - '@willin'
+  # - plugin:@typescript-eslint/recommended-requiring-type-checking
 plugins:
   - import
 parserOptions:
@@ -21,4 +22,4 @@ rules:
   react/react-in-jsx-scope: 0
   react/jsx-no-target-blank: 0
   quotes: [2, 'single', { 'avoidEscape': true }]
-  '@typescript-eslint/explicit-function-return-type': 0
+  # '@typescript-eslint/explicit-function-return-type': 0
