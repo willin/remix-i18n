@@ -4,10 +4,11 @@
   "description": "",
   "author": "Willin Wang <willin@willin.org> (https://willin.wang/)",
   "license": "Apache-2.0",
+  "type": "module",
   "scripts": {
     "build": "npm run build:css && NODE_ENV=production remix build",
-    "dev": "pm2-dev ./pm2.config.js  --env development",
-    "build:css": "postcss styles/**/*.css --base styles --dir app/styles --env production",
+    "dev": "remix dev --manual -c \"npm run start\"",
+    "start": "wrangler pages dev --compatibility-date=2023-06-21 ./public  --kv CONTENTS",
     "lint": "eslint --fix --ext .ts,.tsx --ignore-path .gitignore ."
   },
   "dependencies": {

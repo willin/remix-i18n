@@ -1,11 +1,6 @@
-import {
-  createContext,
-  createElement,
-  ReactNode,
-  useMemo,
-  useState
-} from 'react';
-import { RemixI18n } from './i18n';
+import { createContext, createElement, useMemo, useState } from 'react';
+import type { ReactNode } from 'react';
+import type { RemixI18n } from './i18n';
 
 export const context = createContext<{ i18n: RemixI18n } | null>(null);
 
