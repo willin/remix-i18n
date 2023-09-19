@@ -1,4 +1,8 @@
-import { LoaderFunction, redirect } from '@remix-run/cloudflare';
+import {
+  ActionFunction,
+  LoaderFunction,
+  redirect
+} from '@remix-run/cloudflare';
 import { pick } from 'accept-language-parser';
 import { i18n } from '../i18n';
 
