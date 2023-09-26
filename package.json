@@ -1,6 +1,6 @@
 {
   "name": "remix-i18n",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
@@ -21,7 +21,6 @@
   },
   "peerDependencies": {
     "@remix-run/react": "^2.0.0",
-    "@remix-run/server-runtime": "^2.0.0",
     "react": "^18.0.0"
   },
   "devDependencies": {
